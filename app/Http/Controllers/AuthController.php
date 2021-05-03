@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegistrationRequest;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 
@@ -29,5 +30,21 @@ class AuthController extends Controller
         }
 
         return redirect('/home');
+    }
+
+    public function register()
+    {
+        return view('auth.register');
+    }
+
+    public function registerPost(RegistrationRequest $request)
+    {
+        try {
+            $data = $this->authService->register($request);
+        } catch (\Throwable $th) {
+            return redirect('/register')->with('error', $th->getMessage());
+        }
+
+        return redirect('/login')->with('success', 'Registration success, you can login with your data');
     }
 }
