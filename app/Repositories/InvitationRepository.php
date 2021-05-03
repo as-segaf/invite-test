@@ -9,7 +9,7 @@ class InvitationRepository implements InvitationRepositoryInterface
 {
     public function getAll()
     {
-        return Invitation::all();
+        return Invitation::where('sent_by', auth()->id())->get();
     }
 
     public function store($request)
