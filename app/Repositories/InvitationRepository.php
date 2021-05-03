@@ -28,4 +28,19 @@ class InvitationRepository implements InvitationRepositoryInterface
 
         return $invitation;
     }
+
+    public function update($request, $id)
+    {
+        $invitation = Invitation::findOrFail($id);
+        
+        $invitation->event_name = $request->event_name;
+        $invitation->additional_info = $request->additional_info;
+        $invitation->event_date = $request->event_date;
+
+        if (!$invitation->save()) {
+            throw new Exception("Failed to update invitation", 1);
+        }
+
+        return $invitation;
+    }
 }

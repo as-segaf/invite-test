@@ -30,6 +30,17 @@ class InvitationController extends Controller
             return redirect('/home')->with('error', $th->getMessage());
         }
 
-        return redirect('home')->with('success', 'Invitation sent successfully');
+        return redirect('/home')->with('success', 'Invitation sent successfully');
+    }
+
+    public function update(InvitationRequest $request, $id)
+    {
+        try {
+            $data = $this->invitationService->updadate($request, $id);
+        } catch (\Throwable $th) {
+            redirect('/home')->with('error', $th->getMessage());
+        }
+
+        return redirect('/home')->with('success', 'Invitation updated successfully');
     }
 }
