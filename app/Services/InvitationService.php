@@ -17,4 +17,9 @@ class InvitationService
     {
         return $this->invitationRepository->getAll();
     }
+
+    public function store($request)
+    {
+        return $this->invitationRepository->store($request);
+    }
 }

@@ -11,4 +11,21 @@ class InvitationRepository implements InvitationRepositoryInterface
     {
         return Invitation::all();
     }
+
+    public function store($request)
+    {
+        $invitation = Invitation::create([
+            'event_name' => $request->event_name,
+            'additional_info' => $request->additional_info,
+            'event_date' => $request->event_date,
+            'status' => 'pending',
+            'sent_by' => auth()->id(),
+        ]);
+
+        if (!$invitation) {
+            throw new Exception("Failed to save invitation", 1);
+        }
+
+        return $invitation;
+    }
 }
