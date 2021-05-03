@@ -47,4 +47,15 @@ class AuthController extends Controller
 
         return redirect('/login')->with('success', 'Registration success, you can login with your data');
     }
+
+    public function logout(Request $request)
+    {
+        try {
+            $data = $this->authService->logout();
+        } catch (\Throwable $th) {
+            redirect('/home')->with('error', $th->getMessage());
+        }
+
+        return redirect('/login');
+    }
 }

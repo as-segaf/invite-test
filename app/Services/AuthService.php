@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\UserRepositoryInterfaces;
+use Illuminate\Support\Facades\Auth;
 
 class AuthService
 {
@@ -24,6 +25,11 @@ class AuthService
 
     public function register($request)
     {
-        $this->userRepository->createUser($request);
+        return $this->userRepository->createUser($request);
+    }
+
+    public function logout()
+    {
+        return Auth::logout();
     }
 }
