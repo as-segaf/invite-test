@@ -17,7 +17,7 @@ class InvitationController extends Controller
 
     public function index()
     {
-        $datas = $this->invitationService->index();
+        $datas = $this->invitationService->getUserInvitations();
 
         return view('invitation.index', compact('datas'));
     }

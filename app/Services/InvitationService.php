@@ -13,9 +13,9 @@ class InvitationService
         return $this->invitationRepository = $invitationRepository;
     }
 
-    public function index()
+    public function getUserInvitations()
     {
-        return $this->invitationRepository->getAll();
+        return $this->invitationRepository->getUserInvitations();
     }
 
     public function store($request)
