@@ -36,7 +36,7 @@ class InvitationController extends Controller
     public function update(InvitationRequest $request, $id)
     {
         try {
-            $data = $this->invitationService->updadate($request, $id);
+            $data = $this->invitationService->update($request, $id);
         } catch (\Throwable $th) {
             return redirect('/home')->with('error', $th->getMessage());
         }

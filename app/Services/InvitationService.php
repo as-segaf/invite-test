@@ -23,7 +23,7 @@ class InvitationService
         return $this->invitationRepository->store($request);
     }
 
-    public function updadate($request, $id)
+    public function update($request, $id)
     {
         return $this->invitationRepository->update($request, $id);
     }
