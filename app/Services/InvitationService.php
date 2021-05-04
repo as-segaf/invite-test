@@ -13,6 +13,11 @@ class InvitationService
         return $this->invitationRepository = $invitationRepository;
     }
 
+    public function getAll()
+    {
+        return $this->invitationRepository->getAll();
+    }
+
     public function getUserInvitations()
     {
         return $this->invitationRepository->getUserInvitations();

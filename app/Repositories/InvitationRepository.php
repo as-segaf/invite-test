@@ -7,6 +7,11 @@ use App\Models\Invitation;
 
 class InvitationRepository implements InvitationRepositoryInterface
 {
+    public function getAll()
+    {
+        return Invitation::all();
+    }
+
     public function getUserInvitations()
     {
         return Invitation::where('sent_by', auth()->id())->get();

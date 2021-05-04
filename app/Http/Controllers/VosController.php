@@ -13,4 +13,11 @@ class VosController extends Controller
     {
         return $this->invitationService = $invitationRepository;
     }
+
+    public function index()
+    {
+        $datas = $this->invitationService->getAll();
+
+        return view('vos.index', compact('datas'));
+    }
 }

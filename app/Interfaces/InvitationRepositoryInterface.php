@@ -4,6 +4,8 @@ namespace App\Interfaces;
 
 interface InvitationRepositoryInterface
 {
+    public function getAll();
+
     public function getUserInvitations();
 
     public function store($request);
