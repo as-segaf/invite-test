@@ -49,6 +49,19 @@ class InvitationRepository implements InvitationRepositoryInterface
         return $invitation;
     }
 
+    public function updateStatus($request, $id)
+    {
+        $invitation = Invitation::findOrFail($id);
+
+        $invitation->status = $request->status;
+
+        if (!$invitation->save()) {
+            throw new Exception("Failed to update invitation status", 1);
+        }
+        
+        return $invitation;
+    }
+
     public function destroy($id)
     {
         $invitation = Invitation::findOrFail($id);

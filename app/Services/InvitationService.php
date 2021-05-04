@@ -33,6 +33,11 @@ class InvitationService
         return $this->invitationRepository->update($request, $id);
     }
 
+    public function updateStatus($request, $id)
+    {
+        return $this->invitationRepository->updateStatus($request, $id);
+    }
+
     public function destroy($id)
     {
         return $this->invitationRepository->destroy($id);

@@ -20,4 +20,15 @@ class VosController extends Controller
 
         return view('vos.index', compact('datas'));
     }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $data = $this->invitationService->updateStatus($request, $id);
+        } catch (\Throwable $th) {
+            return redirect('/vos/home')->with('error', $th->getMessage());
+        }
+
+        return redirect('/vos/home')->with('success', 'Invitation updated successfully');
+    }
 }
