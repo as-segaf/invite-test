@@ -43,4 +43,15 @@ class InvitationRepository implements InvitationRepositoryInterface
 
         return $invitation;
     }
+
+    public function destroy($id)
+    {
+        $invitation = Invitation::findOrFail($id);
+
+        if (!$invitation->delete()) {
+            throw new Exception("Failed to delete data", 1);
+        }
+
+        return $invitation;
+    }
 }

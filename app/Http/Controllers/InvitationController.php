@@ -38,9 +38,20 @@ class InvitationController extends Controller
         try {
             $data = $this->invitationService->updadate($request, $id);
         } catch (\Throwable $th) {
-            redirect('/home')->with('error', $th->getMessage());
+            return redirect('/home')->with('error', $th->getMessage());
         }
 
         return redirect('/home')->with('success', 'Invitation updated successfully');
+    }
+
+    public function destroy(Request $id)
+    {
+        try {
+            $data = $this->invitationService->destroy($id);
+        } catch (\Throwable $th) {
+            return redirect('/home')->with('error', $th->getMessage());
+        }
+
+        return redirect('/home')->with('success', 'Invitation deleted successfully');
     }
 }
