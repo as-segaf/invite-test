@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,3 +24,7 @@ Route::post('/login', [AuthController::class, 'loginPost']);
 Route::get('/register', [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'registerPost']);
 Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::middleware('auth')->group(function() {
+    Route::resource('invitation', InvitationController::class)->except('create', 'show', 'edit');
+});
