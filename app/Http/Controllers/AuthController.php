@@ -30,7 +30,11 @@ class AuthController extends Controller
             return redirect('/login')->with('error', $th->getMessage());
         }
 
-        return redirect('/home');
+        if ($user->is_admin == 0) {
+            return redirect('/home');
+        }
+
+        return redirect('/vos/home');
     }
 
     public function register()
