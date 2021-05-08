@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\UserRepositoryInterfaces;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthService
 {
@@ -31,5 +32,29 @@ class AuthService
     public function logout()
     {
         return Auth::logout();
+    }
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        $googleUser = Socialite::driver('google')->user();
+
+        $user = $this->userRepository->findUserByGoogleId($googleUser->id);
+
+        if (!$user) {
+            $User = $this->userRepository->createUserFromGoogle($user);
+        }
+        
+        $data = Auth::login($user);
+
+        if (!$data) {
+            throw new Exception("Login to app failed", 1);
+        }
+
+        return $data;
     }
 }
