@@ -21,4 +21,27 @@ class UserRepository implements UserRepositoryInterfaces
 
         return $user;
     }
+
+    public function createUserFromGoogle($data)
+    {
+        $user = User::create([
+            'name' => $data->name,
+            'email' => $data->email,
+            'google_id' => $data->id,
+            'password' => Hash::make('secret123'),
+        ]);
+
+        if (!$user) {
+            throw new Exception("Failed to create user", 1);
+        }
+
+        return $user;
+    }
+
+    public function findUserByGoogleId($googleId)
+    {
+        $user = User::where('google_id', $googleId)->first();
+
+        return $user;
+    }
 }
