@@ -19,8 +19,10 @@ class CreateInvitationsTable extends Migration
             $table->string('additional_info');
             $table->date('event_date');
             $table->string('status');
-            $table->foreignId('sent_by')->constrained();
+            $table->foreignId('sent_by');
             $table->timestamps();
+
+            $table->foreign('sent_by')->references('id')->on('users');
         });
     }
 
