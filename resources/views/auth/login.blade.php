@@ -8,8 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{url('/assets/dist/assets/css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{url('/assets/dist/assets/vendors/bootstrap-icons/bootstrap-icons.css')}}">
-    <link rel="stylesheet" href=" {{url('/assets/dist/assets/css/app.css')}}">
-    <link rel="stylesheet" href=" {{url('/assets/dist/assets/css/pages/auth.css')}}">
+    <link rel="stylesheet" href="{{url('/assets/dist/assets/css/app.css')}}">
+    <link rel="stylesheet" href="{{url('/assets/dist/assets/css/pages/auth.css')}}">
 </head>
 
 <body>
@@ -37,7 +37,7 @@
                         <div class="form-group position-relative has-icon-left mb-4">
                             <input type="text" class="form-control form-control-xl" placeholder="Email" name="email">
                             <div class="form-control-icon">
-                                <i class="bi bi-person"></i>
+                                <i class="bi bi-envelope"></i>
                             </div>
                             @if($errors->has('email'))
                                 <p><small class="text-danger">{{$errors->first('email')}}.</small></p>
