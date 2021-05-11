@@ -67,9 +67,9 @@ class AuthController extends Controller
     public function googleLogin()
     {
         try {
-            $data = $this->authService->googleLogin();
+            $data = $this->authService->redirectToGoogle();
         } catch (\Throwable $th) {
-            return redirect('/login')->with('error', 'Failed redirect to google');
+            return redirect('/login')->with('error', $th->getMessage());
         }
 
         return $data;
