@@ -31,10 +31,10 @@ class AuthController extends Controller
         }
 
         if ($user->is_admin == 0) {
-            return redirect('/home');
+            return redirect('/invitation');
         }
 
-        return redirect('/vos/home');
+        return redirect('/vos/invitation');
     }
 
     public function register()
