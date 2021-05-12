@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\UserRepositoryInterfaces;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterfaces
