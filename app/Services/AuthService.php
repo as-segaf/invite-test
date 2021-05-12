@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\UserRepositoryInterfaces;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
