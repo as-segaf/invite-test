@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\VosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,5 +29,12 @@ Route::post('/register', [AuthController::class, 'registerPost']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth')->group(function() {
-    Route::resource('invitation', InvitationController::class)->except('create', 'show', 'edit');
+    Route::middleware('admin')->prefix('vos')->group(function() {
+        Route::get('invitation', [VosController::class, 'index']);
+        Route::patch('invitation/{invitation}', [VosController::class, 'updateStatus']);
+    });
+
+    Route::middleware('user')->group(function() {
+        Route::resource('invitation', InvitationController::class)->except('create', 'show', 'edit');
+    });
 });
