@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Interfaces\InvitationRepositoryInterface;
+use Exception;
+use Illuminate\Support\Facades\Gate;
 
 class InvitationService
 {
@@ -13,13 +15,12 @@ class InvitationService
         return $this->invitationRepository = $invitationRepository;
     }
 
-    public function getAll()
+    public function index()
     {
-        return $this->invitationRepository->getAll();
-    }
+        if (Gate::allows('isAdmin')) {
+            return $this->invitationRepository->getAll();
+        }
 
-    public function getUserInvitations()
-    {
         return $this->invitationRepository->getUserInvitations();
     }
 
@@ -28,13 +29,13 @@ class InvitationService
         return $this->invitationRepository->store($request);
     }
 
-    public function update($request, $id)
+    public function update($request, $invitation)
     {
-        if (!auth()->user()->can('update', $id)) {
+        if (!auth()->user()->can('update', $invitation)) {
             throw new Exception("You are not allowed to do this actions", 1);
         }
 
-        return $this->invitationRepository->update($request, $id);
+        return $this->invitationRepository->update($request, $invitation);
     }
 
     public function updateStatus($request, $id)
