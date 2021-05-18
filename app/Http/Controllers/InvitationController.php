@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InvitationRequest;
+use App\Models\Invitation;
 use App\Services\InvitationService;
 use Illuminate\Http\Request;
 
@@ -17,9 +18,9 @@ class InvitationController extends Controller
 
     public function index()
     {
-        $datas = $this->invitationService->getUserInvitations();
+        $datas = $this->invitationService->index();
 
-        return view('invitation.index', compact('datas'));
+        return view('user.index', compact('datas'));
     }
 
     public function store(InvitationRequest $request)
@@ -27,21 +28,21 @@ class InvitationController extends Controller
         try {
             $data = $this->invitationService->store($request);
         } catch (\Throwable $th) {
-            return redirect('/home')->with('error', $th->getMessage());
+            return redirect('/invitation')->with('error', $th->getMessage());
         }
 
-        return redirect('/home')->with('success', 'Invitation sent successfully');
+        return redirect('/invitation')->with('success', 'Invitation sent successfully');
     }
 
-    public function update(InvitationRequest $request, $id)
+    public function update(InvitationRequest $request,Invitation $invitation)
     {
         try {
-            $data = $this->invitationService->update($request, $id);
+            $data = $this->invitationService->update($request, $invitation);
         } catch (\Throwable $th) {
-            return redirect('/home')->with('error', $th->getMessage());
+            return redirect('/invitation')->with('error', $th->getMessage());
         }
 
-        return redirect('/home')->with('success', 'Invitation updated successfully');
+        return redirect('/invitation')->with('success', 'Invitation updated successfully');
     }
 
     public function destroy(Request $id)
@@ -49,9 +50,9 @@ class InvitationController extends Controller
         try {
             $data = $this->invitationService->destroy($id);
         } catch (\Throwable $th) {
-            return redirect('/home')->with('error', $th->getMessage());
+            return redirect('/invitation')->with('error', $th->getMessage());
         }
 
-        return redirect('/home')->with('success', 'Invitation deleted successfully');
+        return redirect('/invitation')->with('success', 'Invitation deleted successfully');
     }
 }
