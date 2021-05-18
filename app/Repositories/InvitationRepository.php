@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\InvitationRepositoryInterface;
 use App\Models\Invitation;
+use Exception;
 
 class InvitationRepository implements InvitationRepositoryInterface
 {
@@ -34,10 +35,8 @@ class InvitationRepository implements InvitationRepositoryInterface
         return $invitation;
     }
 
-    public function update($request, $id)
+    public function update($request, $invitation)
     {
-        $invitation = Invitation::findOrFail($id);
-        
         $invitation->event_name = $request->event_name;
         $invitation->additional_info = $request->additional_info;
         $invitation->event_date = $request->event_date;
