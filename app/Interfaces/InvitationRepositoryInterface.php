@@ -10,9 +10,9 @@ interface InvitationRepositoryInterface
 
     public function store($request);
 
-    public function update($request, $id);
+    public function update($request, $invitation);
 
-    public function updateStatus($request, $id);
+    public function updateStatus($request, $invitation);
 
     public function destroy($id);
 }

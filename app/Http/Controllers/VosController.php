@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\InvitationRepositoryInterface;
+use App\Models\Invitation;
 use Illuminate\Http\Request;
 
 class VosController extends Controller
@@ -21,14 +22,14 @@ class VosController extends Controller
         return view('vos.index', compact('datas'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request,Invitation $invitation)
     {
         try {
-            $data = $this->invitationService->updateStatus($request, $id);
+            $data = $this->invitationService->updateStatus($request, $invitation);
         } catch (\Throwable $th) {
-            return redirect('/vos/home')->with('error', $th->getMessage());
+            return redirect('/vos/invitation')->with('error', $th->getMessage());
         }
 
-        return redirect('/vos/home')->with('success', 'Invitation updated successfully');
+        return redirect('/vos/invitation')->with('success', 'Invitation updated successfully');
     }
 }

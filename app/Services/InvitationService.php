@@ -38,13 +38,13 @@ class InvitationService
         return $this->invitationRepository->update($request, $invitation);
     }
 
-    public function updateStatus($request, $id)
+    public function updateStatus($request, $invitation)
     {
-        if (!auth()->user()->can('update', $id)) {
+        if (!auth()->user()->can('update', $invitation)) {
             throw new Exception("You are not allowed to do this actions", 1);
         }
         
-        return $this->invitationRepository->updateStatus($request, $id);
+        return $this->invitationRepository->updateStatus($request, $invitation);
     }
 
     public function destroy($id)
