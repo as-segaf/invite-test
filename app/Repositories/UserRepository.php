@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\UserRepositoryInterfaces;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterfaces
@@ -42,6 +43,13 @@ class UserRepository implements UserRepositoryInterfaces
     public function findUserByGoogleId($googleId)
     {
         $user = User::where('google_id', $googleId)->first();
+
+        return $user;
+    }
+
+    public function findUserByEmail($email)
+    {
+        $user = User::where('email', $email)->first();
 
         return $user;
     }

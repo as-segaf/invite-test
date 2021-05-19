@@ -9,4 +9,6 @@ interface UserRepositoryInterfaces
     public function createUserFromGoogle($data);
     
     public function findUserByGoogleId($googleId);
+
+    public function findUserByEmail($email);
 }
