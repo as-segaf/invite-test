@@ -78,11 +78,15 @@ class AuthController extends Controller
     public function googleLoginCallback()
     {
         try {
-            $data = $this->authService->handleGoogleCallback();
+            $user = $this->authService->handleGoogleCallback();
         } catch (\Throwable $th) {
             return redirect('/login')->with('error', $th->getMessage());
         }
 
-        return redirect('/home');
+        if ($user->is_admin == 0) {
+            return redirect('/invitation');
+        }
+
+        return redirect('/vos/invitation');
     }
 }
