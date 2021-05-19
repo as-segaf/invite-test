@@ -30,8 +30,7 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth')->group(function() {
     Route::middleware('admin')->prefix('vos')->group(function() {
-        Route::get('invitation', [VosController::class, 'index']);
-        Route::patch('invitation/{invitation}', [VosController::class, 'updateStatus']);
+        Route::resource('invitation', VosController::class)->only('index', 'update');
     });
 
     Route::middleware('user')->group(function() {
