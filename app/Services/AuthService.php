@@ -44,7 +44,7 @@ class AuthService
     {
         $googleUser = Socialite::driver('google')->user();
 
-        $user = $this->userRepository->findUserByGoogleId($googleUser->id);
+        $user = $this->userRepository->findUserByEmail($googleUser->getEmail());
 
         if (!$user) {
             $User = $this->userRepository->createUserFromGoogle($user);
