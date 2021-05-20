@@ -25,7 +25,7 @@ class InvitationRequest extends FormRequest
     {
         return [
             'event_name' => 'required',
-            'event_date' => 'required|date'
+            'event_date' => 'required|date|after_or_equal:today'
         ];
     }
 }
