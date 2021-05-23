@@ -18,6 +18,31 @@ class InvitationRepository implements InvitationRepositoryInterface
         return Invitation::where('sent_by', auth()->id())->get();
     }
 
+    public function getFilteredInvitations($request)
+    {
+        $invitations = Invitation::orderBy('id')->with('user');
+
+        if ($request->filled('status')) {
+            $invitations->where('status', $request->status);
+        }
+
+        if ($request->filled('eventDate')) {
+            $invitations->where('event_date', $request->eventDate);
+        }
+
+        if ($request->filled('search')) {
+            $invitations->where('event_name', 'ilike', '%'.$request->search.'%')
+                ->orWhere('additional_info', 'ilike', '%'.$request->search.'%')
+                ->orWhereHas('user', function($query) use($request) {
+                    $query->where('name', 'ilike', '%'.$request->search.'%');
+                });
+        }
+
+        $invitations = $invitations->get();
+
+        return $invitations;
+    }
+
     public function store($request)
     {
         $invitation = Invitation::create([

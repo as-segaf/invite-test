@@ -2,24 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Interfaces\InvitationRepositoryInterface;
 use App\Models\Invitation;
+use App\Services\InvitationService;
 use Illuminate\Http\Request;
 
 class VosController extends Controller
 {
     protected $invitationService; 
 
-    public function __construct(InvitationRepositoryInterface $invitationRepository)
+    public function __construct(InvitationService $invitationService)
     {
-        return $this->invitationService = $invitationRepository;
+        return $this->invitationService = $invitationService;
     }
 
     public function index()
     {
-        $datas = $this->invitationService->getAll();
+        $datas = $this->invitationService->index();
 
         return view('vos.index', compact('datas'));
+    }
+
+    public function filter(Request $request)
+    {
+        $datas = $this->invitationService->filter($request);
+        
+        return view('vos.table', compact('datas'))->render();
     }
 
     public function update(Request $request,Invitation $invitation)

@@ -8,6 +8,8 @@ interface InvitationRepositoryInterface
 
     public function getUserInvitations();
 
+    public function getFilteredInvitations($request);
+
     public function store($request);
 
     public function update($request, $invitation);

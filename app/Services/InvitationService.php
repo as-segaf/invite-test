@@ -24,6 +24,11 @@ class InvitationService
         return $this->invitationRepository->getUserInvitations();
     }
 
+    public function filter($request)
+    {
+        return $this->invitationRepository->getFilteredInvitations($request);
+    }
+
     public function store($request)
     {
         return $this->invitationRepository->store($request);
