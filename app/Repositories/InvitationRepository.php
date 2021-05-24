@@ -10,7 +10,7 @@ class InvitationRepository implements InvitationRepositoryInterface
 {
     public function getAll()
     {
-        return Invitation::all();
+        return Invitation::orderBy('status', 'desc')->get();
     }
 
     public function getUserInvitations()
