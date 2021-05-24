@@ -9,6 +9,20 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterfaces
 {
+    public function createAdmin($request)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'is_admin' => 1,
+        ]);
+
+        if (!$user) {
+            throw new Exception("Failed to create admin", 1);
+        }
+    }
+
     public function createUser($request)
     {
         $user = User::create([

@@ -30,6 +30,11 @@ class AuthService
         return $this->userRepository->createUser($request);
     }
 
+    public function registerAdmin($request)
+    {
+        return $this->userRepository->createAdmin($request);
+    }
+
     public function logout()
     {
         return Auth::logout();

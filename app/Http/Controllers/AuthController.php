@@ -42,12 +42,28 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
+    public function registerAdmin()
+    {
+        return view('auth.register-admin');
+    }
+
     public function registerPost(RegistrationRequest $request)
     {
         try {
             $data = $this->authService->register($request);
         } catch (\Throwable $th) {
             return redirect('/register')->with('error', $th->getMessage());
+        }
+
+        return redirect('/login')->with('success', 'Registration success, you can login with your data');
+    }
+
+    public function registerAdminPost(RegistrationRequest $request)
+    {
+        try {
+            $data = $this->authService->registerAdmin($request);
+        } catch (\Throwable $th) {
+            return redirect('/register-admin')->with('error', $th->getMessage());
         }
 
         return redirect('/login')->with('success', 'Registration success, you can login with your data');
