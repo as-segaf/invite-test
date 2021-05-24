@@ -52,7 +52,7 @@ class AuthService
         $user = $this->userRepository->findUserByEmail($googleUser->getEmail());
 
         if (!$user) {
-            $User = $this->userRepository->createUserFromGoogle($user);
+            $user = $this->userRepository->createUserFromGoogle($googleUser);
         }
         
         $data = Auth::login($user);
