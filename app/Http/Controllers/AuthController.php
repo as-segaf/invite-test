@@ -34,7 +34,7 @@ class AuthController extends Controller
             return redirect('/invitation');
         }
 
-        return redirect('/vos/invitation');
+        return redirect('/vos/dashboard');
     }
 
     public function register()
@@ -58,7 +58,7 @@ class AuthController extends Controller
         try {
             $data = $this->authService->logout();
         } catch (\Throwable $th) {
-            redirect('/home')->with('error', $th->getMessage());
+            redirect('/invitation')->with('error', $th->getMessage());
         }
 
         return redirect('/login');
