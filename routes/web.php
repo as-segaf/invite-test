@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\Vos\DashboardController;
 use App\Http\Controllers\VosController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,11 +27,16 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginPost']);
 Route::get('/register', [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'registerPost']);
+Route::get('/register-admin', [AuthController::class, 'registerAdmin']);
+Route::post('/register-admin', [AuthController::class, 'registerAdminPost']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth')->group(function() {
     Route::middleware('admin')->prefix('vos')->group(function() {
-        Route::resource('invitation', VosController::class)->only('index', 'update');
+        Route::get('dashboard', [DashboardController::class, 'index']);
+        Route::get('invitation/', [VosController::class, 'index']);
+        Route::get('invitation/filter', [VosController::class, 'filter']);
+        Route::patch('invitation/{invitation}', [VosController::class, 'update']);
     });
 
     Route::middleware('user')->group(function() {
