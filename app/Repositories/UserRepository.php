@@ -43,7 +43,6 @@ class UserRepository implements UserRepositoryInterfaces
         $user = User::create([
             'name' => $data->name,
             'email' => $data->email,
-            'google_id' => $data->id,
             'password' => Hash::make('secret123'),
         ]);
 
