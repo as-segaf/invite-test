@@ -15,7 +15,7 @@ class InvitationRepository implements InvitationRepositoryInterface
 
     public function getUserInvitations()
     {
-        return Invitation::where('sent_by', auth()->id())->get();
+        return Invitation::orderBy('id', 'desc')->where('sent_by', auth()->id())->get();
     }
 
     public function getFilteredInvitations($request)
