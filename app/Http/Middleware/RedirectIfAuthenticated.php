@@ -23,7 +23,13 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                if (auth()->user()->is_admin == 0) {
+                    return redirect('/invitation');
+                }
+        
+                if (auth()->user()->is_admin == 1) {
+                    return redirect('/vos/dashboard');
+                }
             }
         }
 
