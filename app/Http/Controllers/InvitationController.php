@@ -23,12 +23,17 @@ class InvitationController extends Controller
         return view('user.index', compact('datas'));
     }
 
+    public function create()
+    {
+        return view('user.create');
+    }
+
     public function store(InvitationRequest $request)
     {
         try {
             $data = $this->invitationService->store($request);
         } catch (\Throwable $th) {
-            return redirect('/invitation')->with('error', $th->getMessage());
+            return redirect('/invitation/create')->with('error', $th->getMessage());
         }
 
         return redirect('/invitation')->with('success', 'Invitation sent successfully');
