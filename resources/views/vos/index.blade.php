@@ -26,7 +26,7 @@
                 <div class="card-content">
                     <div class="card-header">
                         <h3>Invitation Page</h3>
-                        <p class="text-subtitle text-muted">You can see all invitations here. Click the 'Edit' button to accept or decline the invitation. </p>
+                        <p class="text-subtitle text-muted">You can see all invitations here. Click the 'Edit' button to see the invitation detail and accept or decline the invitation. </p>
                     </div>
                     <div class="card-body">
                         <div class="row mb-5">
@@ -77,34 +77,45 @@
                         <i data-feather="x"></i>
                     </button>
                 </div>
-                <form id="update-invitation-form" method="POST">
-                @csrf @method('patch')
-                    <div class="modal-body">
-                        <label id="event-name-lable" class="mb-2"></label><br>
-                        <label id="additional-info-lable" class="mb-2"></label><br>
-                        <label id="event-date-lable" class="mb-2"></label><br>
-                        <label id="sent-by-lable" class="mb-2"></label><br>
-                        <label>Status: </label>
-                        <fieldset class="form-group">
-                            <select class="form-select" id="status-form" name="status">
+                <div class="modal-body">
+                    <p><b>Full Name</b> : <span id="full-name"></span></p>
+                    <p><b>Nick Name</b> : <span id="nick-name"></span></p>
+                    <p><b>No. Handphone</b> : <span id="wa-number"></span></p>
+                    <p><b>Name of Organization</b> : <span id="organization-name"></span></p>
+                    <p><b>Type of Organization</b> : <span id="organization-type"></span></p>
+                    <p><b>Invite VOS As</b> : <span id="invite-vos-as"></span></p>
+                    <p><b>Type of Event</b> : <span id="event-type"></span></p>
+                    <p><b>Date of Event</b> : <span id="event-date"></span></p>
+                    <p><b>Date of Event (Option 2)</b> : <span id="event-date2"></span></p>
+                    <p><b>Duration Event</b> : <span id="event-duration"></span></p>
+                    <p><b>Platform or Place</b> : <span id="event-place"></span></p>
+                    <p><b>Detail Event</b> : <span id="event-detail"></span></p>
+                    <p><b>Participant</b> : <span id="participant"></span></p>
+                    <p><b>Note for VOS</b> : <span id="additional-note"></span></p>
+                    <p><b>Sent by</b> : <span id="sent-by"></span></p>
+                    <form id="update-invitation-form" method="POST">
+                        @csrf @method('patch')
+                        <div class="from-group">
+                            <label for="status"><b>Status</b></label>
+                            <select name="status" id="status-form" class="form-select">
                                 <option value="">Choose one</option>
                                 <option value="pending">Pending</option>
                                 <option value="accepted">Accept</option>
                                 <option value="declined">Decline</option>
                             </select>
-                        </fieldset>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                            <i class="bx bx-x d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Close</span>
-                        </button>
-                        <button type="submit" class="btn btn-primary ml-1">
-                            <i class="bx bx-check d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Update</span>
-                        </button>
-                    </div>
-                </form>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary ml-1" id="submitButton">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Update</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -115,16 +126,38 @@
         $(document).ready(function() {
             $(document).on('click', '.edit-invitation', function() {
                 var invitationId = $(this).data('invitation-id');
-                var eventName = $(this).data('event-name');
-                var additionalInfo = $(this).data('additional-info');
+                var fullName = $(this).data('fullname');
+                var nickName = $(this).data('nickname');
+                var waNumber = $(this).data('wa-number');
+                var organizationType = $(this).data('organization-type');
+                var organizationName = $(this).data('organization-name');
+                var inviteVosAs = $(this).data('invite-vos-as');
+                var eventType = $(this).data('event-type');
                 var eventDate = $(this).data('event-date');
+                var eventDate2 = $(this).data('event-date2');
+                var eventDuration = $(this).data('event-duration');
+                var eventPlace = $(this).data('event-place');
+                var eventDetail = $(this).data('event-detail');
+                var participant = $(this).data('participant');
+                var additionalNote = $(this).data('additional-note');
                 var sentBy = $(this).data('sent-by');
                 var status = $(this).data('status');
 
-                $('#event-name-lable').text('Event name : '+eventName);
-                $('#additional-info-lable').text('Additional info : '+additionalInfo);
-                $('#event-date-lable').text('Event date : '+ eventDate);
-                $('#sent-by-lable').text('Sent by : '+sentBy);
+                $('#full-name').text(fullName);
+                $('#nick-name').text(nickName);
+                $('#wa-number').text(waNumber);
+                $('#organization-name').text(organizationName);
+                $('#organization-type').text(organizationType);
+                $('#invite-vos-as').text(inviteVosAs);
+                $('#event-type').text(eventType);
+                $('#event-date').text(eventDate);
+                $('#event-date2').text(eventDate2);
+                $('#event-duration').text(eventDuration);
+                $('#event-place').text(eventPlace);
+                $('#event-detail').text(eventDetail);
+                $('#participant').text(participant);
+                $('#additional-note').text(additionalNote);
+                $('#sent-by').text(sentBy);
 
                 if (status == 'pending') {
                     $('#status-form option[value=pending]').attr('selected', 'selected');
@@ -139,7 +172,9 @@
                 }
 
                 $('#update-invitation-form').attr('action', '/vos/invitation/'+invitationId);
-                
+                $('#submitButton').click(function() {
+                    $('#update-invitation-form').submit();
+                });
             });
 
             $(document).on('change', '.filter-data', function() {

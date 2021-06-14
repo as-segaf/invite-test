@@ -80,25 +80,23 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Event Name</th>
-                                        <th>Additional Info</th>
+                                        <th>Invited As</th>
+                                        <th>Event Type</th>
                                         <th>Event Date</th>
-                                        <th>Sent By</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
-                                        $no = 0;
+                                        $no = 1;
                                     @endphp
-                                    @foreach($datas->where('status', 'accepted')->where('event_date', '>=', date('Y-m-d')) as $key => $data)
+                                    @foreach($datas->where('status', 'accepted')->where('event_date', '>=', date('Y-m-d 00:00:00'))->sortBy('event_date') as $key => $data)
                                         <tr>
-                                            <td class="text-bold-500">{{$no+1}}</td>
-                                            <td class="text-bold-500">{{$data->event_name}}</td>
-                                            <td class="text-bold-500">{{$data->additional_info}}</td>
+                                            <td class="text-bold-500">{{$no++}}</td>
+                                            <td class="text-bold-500">{{$data->invite_vos_as}}</td>
+                                            <td class="text-bold-500">{{$data->event_type}}</td>
                                             <td class="text-bold-500">{{$data->event_date}}</td>
-                                            <td class="text-bold-500">{{$data->user->name}}</td>
                                             <td class="text-bold-500">
                                                 @if($data->status == 'pending')
                                                     <span class="badge bg-secondary">pending</span>
@@ -109,7 +107,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm edit-invitation" data-bs-toggle="modal" data-bs-target="#modalEdit" data-invitation-id="{{$data->id}}" data-event-name="{{$data->event_name}}" data-additional-info="{{$data->additional_info}}" data-event-date="{{$data->event_date}}" data-sent-by="{{$data->user->name}}" data-status="{{$data->status}}">Edit</button>
+                                                <button class="btn btn-primary btn-sm edit-invitation" data-bs-toggle="modal" data-bs-target="#modalEdit" data-invitation-id="{{$data->id}}" data-fullname="{{$data->full_name}}" data-nickname="{{$data->nick_name}}" data-wa-number="{{$data->wa_number}}" data-organization-type="{{$data->organization_type}}" data-organization-name="{{$data->organization_name}}" data-invite-vos-as="{{$data->invite_vos_as}}" data-event-type="{{$data->event_type}}" data-event-date="{{$data->event_date}}" data-event-date2="{{$data->event_date2}}" data-event-duration="{{$data->event_duration}}" data-event-place="{{$data->event_place}}" data-event-detail="{{$data->event_detail}}" data-participant="{{$data->participant}}" data-additional-note="{{$data->additional_note}}" data-sent-by="{{$data->user->email}}" data-status="{{$data->status}}">Edit</button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -132,34 +130,45 @@
                         <i data-feather="x"></i>
                     </button>
                 </div>
-                <form id="update-invitation-form" method="POST">
-                @csrf @method('patch')
-                    <div class="modal-body">
-                        <label id="event-name-lable" class="mb-2"></label><br>
-                        <label id="additional-info-lable" class="mb-2"></label><br>
-                        <label id="event-date-lable" class="mb-2"></label><br>
-                        <label id="sent-by-lable" class="mb-2"></label><br>
-                        <label>Status: </label>
-                        <fieldset class="form-group">
-                            <select class="form-select" id="status-form" name="status">
+                <div class="modal-body">
+                    <p><b>Full Name</b> : <span id="full-name"></span></p>
+                    <p><b>Nick Name</b> : <span id="nick-name"></span></p>
+                    <p><b>No. Handphone</b> : <span id="wa-number"></span></p>
+                    <p><b>Name of Organization</b> : <span id="organization-name"></span></p>
+                    <p><b>Type of Organization</b> : <span id="organization-type"></span></p>
+                    <p><b>Invite VOS As</b> : <span id="invite-vos-as"></span></p>
+                    <p><b>Type of Event</b> : <span id="event-type"></span></p>
+                    <p><b>Date of Event</b> : <span id="event-date"></span></p>
+                    <p><b>Date of Event (Option 2)</b> : <span id="event-date2"></span></p>
+                    <p><b>Duration Event</b> : <span id="event-duration"></span></p>
+                    <p><b>Platform or Place</b> : <span id="event-place"></span></p>
+                    <p><b>Detail Event</b> : <span id="event-detail"></span></p>
+                    <p><b>Participant</b> : <span id="participant"></span></p>
+                    <p><b>Note for VOS</b> : <span id="additional-note"></span></p>
+                    <p><b>Sent by</b> : <span id="sent-by"></span></p>
+                    <form id="update-invitation-form" method="POST">
+                        @csrf @method('patch')
+                        <div class="from-group">
+                            <label for="status"><b>Status</b></label>
+                            <select name="status" id="status-form" class="form-select">
                                 <option value="">Choose one</option>
                                 <option value="pending">Pending</option>
                                 <option value="accepted">Accept</option>
                                 <option value="declined">Decline</option>
                             </select>
-                        </fieldset>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                            <i class="bx bx-x d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Close</span>
-                        </button>
-                        <button type="submit" class="btn btn-primary ml-1">
-                            <i class="bx bx-check d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Update</span>
-                        </button>
-                    </div>
-                </form>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary ml-1" id="submitButton">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Update</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -170,16 +179,38 @@
         $(document).ready(function() {
             $(document).on('click', '.edit-invitation', function() {
                 var invitationId = $(this).data('invitation-id');
-                var eventName = $(this).data('event-name');
-                var additionalInfo = $(this).data('additional-info');
+                var fullName = $(this).data('fullname');
+                var nickName = $(this).data('nickname');
+                var waNumber = $(this).data('wa-number');
+                var organizationType = $(this).data('organization-type');
+                var organizationName = $(this).data('organization-name');
+                var inviteVosAs = $(this).data('invite-vos-as');
+                var eventType = $(this).data('event-type');
                 var eventDate = $(this).data('event-date');
+                var eventDate2 = $(this).data('event-date2');
+                var eventDuration = $(this).data('event-duration');
+                var eventPlace = $(this).data('event-place');
+                var eventDetail = $(this).data('event-detail');
+                var participant = $(this).data('participant');
+                var additionalNote = $(this).data('additional-note');
                 var sentBy = $(this).data('sent-by');
                 var status = $(this).data('status');
 
-                $('#event-name-lable').text('Event name : '+eventName);
-                $('#additional-info-lable').text('Additional info : '+additionalInfo);
-                $('#event-date-lable').text('Event date : '+ eventDate);
-                $('#sent-by-lable').text('Sent by : '+sentBy);
+                $('#full-name').text(fullName);
+                $('#nick-name').text(nickName);
+                $('#wa-number').text(waNumber);
+                $('#organization-name').text(organizationName);
+                $('#organization-type').text(organizationType);
+                $('#invite-vos-as').text(inviteVosAs);
+                $('#event-type').text(eventType);
+                $('#event-date').text(eventDate);
+                $('#event-date2').text(eventDate2);
+                $('#event-duration').text(eventDuration);
+                $('#event-place').text(eventPlace);
+                $('#event-detail').text(eventDetail);
+                $('#participant').text(participant);
+                $('#additional-note').text(additionalNote);
+                $('#sent-by').text(sentBy);
 
                 if (status == 'pending') {
                     $('#status-form option[value=pending]').attr('selected', 'selected');
@@ -194,7 +225,9 @@
                 }
 
                 $('#update-invitation-form').attr('action', '/vos/invitation/'+invitationId);
-                
+                $('#submitButton').click(function() {
+                    $('#update-invitation-form').submit();
+                });
             });
         });
     </script>
