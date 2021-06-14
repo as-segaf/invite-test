@@ -40,6 +40,6 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::middleware('user')->group(function() {
-        Route::resource('invitation', InvitationController::class)->except('create', 'show', 'edit');
+        Route::resource('invitation', InvitationController::class)->except('show', 'edit');
     });
 });
