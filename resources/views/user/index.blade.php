@@ -24,8 +24,8 @@
             <div class="card">
                 <div class="card-header">
                     <h3>Invitations</h3>
-                    <p class="text-subtitle text-muted">You can create an invitation by clicking 'Create' button. And you can update your invitation by clicking 'Edit' button. </p>
-                    <button type="button" class="btn btn-outline-success float-end" data-bs-toggle="modal" data-bs-target="#modalCreate">Create</button>
+                    <p class="text-subtitle text-muted">You can create an invitation by clicking 'Create' button. And you can see the detail of your invitation by clicking 'Detail' button. </p>
+                    <a href="/invitation/create"><button type="button" class="btn btn-outline-success float-end">Create</button></a>
                 </div>
                 <div class="card-content">
                     <div class="card-body">
@@ -35,8 +35,8 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Event Name</th>
-                                        <th>Additional Info</th>
+                                        <th>Invite VOS As</th>
+                                        <th>Event Type</th>
                                         <th>Event Date</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -46,8 +46,8 @@
                                     @foreach($datas as $key => $data)
                                         <tr>
                                             <td class="text-bold-500">{{$key+1}}</td>
-                                            <td class="text-bold-500">{{$data->event_name}}</td>
-                                            <td class="text-bold-500">{{$data->additional_info}}</td>
+                                            <td class="text-bold-500">{{$data->invite_vos_as}}</td>
+                                            <td class="text-bold-500">{{$data->event_type}}</td>
                                             <td class="text-bold-500">{{$data->event_date}}</td>
                                             <td class="text-bold-500">
                                                 @if($data->status == 'pending')
@@ -59,7 +59,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm edit-invitation" data-bs-toggle="modal" data-bs-target="#modalEdit" data-invitation-id="{{$data->id}}" data-event-name="{{$data->event_name}}" data-additional-info="{{$data->additional_info}}" data-event-date="{{$data->event_date}}">Edit</button>
+                                                <button class="btn btn-primary btn-sm detail-invitation" data-bs-toggle="modal" data-bs-target="#modalDetail" data-invitation-id="{{$data->id}}" data-fullname="{{$data->full_name}}" data-nickname="{{$data->nick_name}}" data-wa-number="{{$data->wa_number}}" data-organization-type="{{$data->organization_type}}" data-organization-name="{{$data->organization_name}}" data-invite-vos-as="{{$data->invite_vos_as}}" data-event-type="{{$data->event_type}}" data-event-date="{{$data->event_date}}" data-event-date2="{{$data->event_date2}}" data-event-duration="{{$data->event_duration}}" data-event-place="{{$data->event_place}}" data-event-detail="{{$data->event_detail}}" data-participant="{{$data->participant}}" data-additional-note="{{$data->additional_note}}" data-status="{{$data->status}}">Detail</button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -72,57 +72,44 @@
         </section>
     </div>
 
-    {{-- Modal Create --}}
-    <div class="modal fade text-left" id="modalCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    {{-- Modal Detail --}}
+    <div class="modal fade text-left" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel33">Create Invitation Form</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title" id="myModalLabel1">Detail Invitation</h5>
+                    <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
                         <i data-feather="x"></i>
                     </button>
                 </div>
-                <form action="/invitation" method="POST">
-                @csrf
-                    <div class="modal-body">
-                        <label>Event Name: </label>
-                        <div class="form-group">
-                            <input type="text" placeholder="Event name" class="form-control" name="event_name">
-                            @if($errors->has('event_name'))
-                                <p><small class="text-danger">{{$errors->first('event_name')}}.</small></p>
-                            @endif
-                        </div>
-                        <label>Additional Info: </label>
-                        <div class="form-group">
-                            <input type="text" placeholder="Additional info" class="form-control" name="additional_info">
-                            @if($errors->has('additional_info'))
-                                <p><small class="text-danger">{{$errors->first('additional_info')}}.</small></p>
-                            @endif
-                        </div>
-                        <label>Event Date: </label>
-                        <div class="form-group">
-                            <input type="date" placeholder="Event Date" class="form-control" min="{{date('Y-m-d')}}" name="event_date">
-                            @if($errors->has('event_date'))
-                                <p><small class="text-danger">{{$errors->first('event_date')}}.</small></p>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                            <i class="bx bx-x d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Close</span>
-                        </button>
-                        <button type="submit" class="btn btn-primary ml-1">
-                            <i class="bx bx-check d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Create</span>
-                        </button>
-                    </div>
-                </form>
+                <div class="modal-body">
+                    <p><b>Full Name</b> : <span id="full-name"></span></p>
+                    <p><b>Nick Name</b> : <span id="nick-name"></span></p>
+                    <p><b>No. Handphone</b> : <span id="wa-number"></span></p>
+                    <p><b>Name of Organization</b> : <span id="organization-name"></span></p>
+                    <p><b>Type of Organization</b> : <span id="organization-type"></span></p>
+                    <p><b>Invite VOS As</b> : <span id="invite-vos-as"></span></p>
+                    <p><b>Type of Event</b> : <span id="event-type"></span></p>
+                    <p><b>Date of Event</b> : <span id="event-date"></span></p>
+                    <p><b>Date of Event (Option 2)</b> : <span id="event-date2"></span></p>
+                    <p><b>Duration Event</b> : <span id="event-duration"></span></p>
+                    <p><b>Platform or Place</b> : <span id="event-place"></span></p>
+                    <p><b>Detail Event</b> : <span id="event-detail"></span></p>
+                    <p><b>Participant</b> : <span id="participant"></span></p>
+                    <p><b>Note for VOS</b> : <span id="additional-note"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     {{-- Modal Update --}}
+    {{--
     <div class="modal fade text-left" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
@@ -171,22 +158,56 @@
             </div>
         </div>
     </div>
+    --}}
 @endsection
 
 @push('script')
     <script>
         $(document).ready(function() {
-            $(document).on('click', '.edit-invitation', function() {
+            $(document).on('click', '.detail-invitation', function() {
                 var invitationId = $(this).data('invitation-id');
-                var eventName = $(this).data('event-name');
-                var additionalInfo = $(this).data('additional-info');
+                var fullName = $(this).data('fullname');
+                var nickName = $(this).data('nickname');
+                var waNumber = $(this).data('wa-number');
+                var organizationType = $(this).data('organization-type');
+                var organizationName = $(this).data('organization-name');
+                var inviteVosAs = $(this).data('invite-vos-as');
+                var eventType = $(this).data('event-type');
                 var eventDate = $(this).data('event-date');
+                var eventDate2 = $(this).data('event-date2');
+                var eventDuration = $(this).data('event-duration');
+                var eventPlace = $(this).data('event-place');
+                var eventDetail = $(this).data('event-detail');
+                var participant = $(this).data('participant');
+                var additionalNote = $(this).data('additional-note');
 
-                $('#event-name-input').val(eventName);
-                $('#additional-info-input').val(additionalInfo);
-                $('#event-date-input').val(eventDate);
-                $('#update-invitation-form').attr('action', '/invitation/'+invitationId);
-            })
+                $('#full-name').text(fullName);
+                $('#nick-name').text(nickName);
+                $('#wa-number').text(waNumber);
+                $('#organization-name').text(organizationName);
+                $('#organization-type').text(organizationType);
+                $('#invite-vos-as').text(inviteVosAs);
+                $('#event-type').text(eventType);
+                $('#event-date').text(eventDate);
+                $('#event-date2').text(eventDate2);
+                $('#event-duration').text(eventDuration);
+                $('#event-place').text(eventPlace);
+                $('#event-detail').text(eventDetail);
+                $('#participant').text(participant);
+                $('#additional-note').text(additionalNote);
+            });
+
+            // $(document).on('click', '.edit-invitation', function() {
+            //     var invitationId = $(this).data('invitation-id');
+            //     var eventName = $(this).data('event-name');
+            //     var additionalInfo = $(this).data('additional-info');
+            //     var eventDate = $(this).data('event-date');
+
+            //     $('#event-name-input').val(eventName);
+            //     $('#additional-info-input').val(additionalInfo);
+            //     $('#event-date-input').val(eventDate);
+            //     $('#update-invitation-form').attr('action', '/invitation/'+invitationId);
+            // })
         });
     </script>
 @endpush
