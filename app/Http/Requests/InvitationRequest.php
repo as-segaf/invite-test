@@ -24,8 +24,17 @@ class InvitationRequest extends FormRequest
     public function rules()
     {
         return [
-            'event_name' => 'required',
-            'event_date' => 'required|date|after_or_equal:today'
+            'full_name' => 'required',
+            'nick_name' => 'required',
+            'wa_number' => 'required',
+            'organization_type' => 'required',
+            'organization_name' => 'required',
+            'invite_vos_as' => 'required',
+            'event_type' => 'required',
+            'event_date' => 'required|date|after_or_equal:today',
+            'event_place' => 'required',
+            'event_detail' => 'required',
+            'participant' => 'required',
         ];
     }
 }
