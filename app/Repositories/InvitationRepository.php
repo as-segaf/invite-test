@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\InvitationRepositoryInterface;
 use App\Models\Invitation;
+use Carbon\Carbon;
 use Exception;
 
 class InvitationRepository implements InvitationRepositoryInterface
@@ -27,14 +28,14 @@ class InvitationRepository implements InvitationRepositoryInterface
         }
 
         if ($request->filled('eventDate')) {
-            $invitations->where('event_date', $request->eventDate);
+            $invitations->whereDate('event_date', '=', Carbon::parse($request->eventDate)->toDateString());
         }
 
         if ($request->filled('search')) {
-            $invitations->where('event_name', 'ilike', '%'.$request->search.'%')
-                ->orWhere('additional_info', 'ilike', '%'.$request->search.'%')
+            $invitations->where('invite_vos_as', 'ilike', '%'.$request->search.'%')
+                ->orWhere('event_type', 'ilike', '%'.$request->search.'%')
                 ->orWhereHas('user', function($query) use($request) {
-                    $query->where('name', 'ilike', '%'.$request->search.'%');
+                    $query->where('email', 'ilike', '%'.$request->search.'%');
                 });
         }
 
@@ -46,9 +47,20 @@ class InvitationRepository implements InvitationRepositoryInterface
     public function store($request)
     {
         $invitation = Invitation::create([
-            'event_name' => $request->event_name,
-            'additional_info' => $request->additional_info,
+            'full_name' => $request->full_name,
+            'nick_name' => $request->nick_name,
+            'wa_number' => $request->wa_number,
+            'organization_type' => $request->organization_type,
+            'organization_name' => $request->organization_name,
+            'invite_vos_as' => $request->invite_vos_as,
+            'event_type' => $request->event_type,
             'event_date' => $request->event_date,
+            'event_date2' => $request->event_date2,
+            'event_duration' => $request->event_duration,
+            'event_place' => $request->event_place,
+            'event_detail' => $request->event_detail,
+            'participant' => implode(",", $request->participant),
+            'additional_note' => $request->additional_note,
             'status' => 'pending',
             'sent_by' => auth()->id(),
         ]);
