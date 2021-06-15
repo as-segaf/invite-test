@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Interfaces\InvitationRepositoryInterface;
 use Exception;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 
 class InvitationService
 {
@@ -49,7 +50,11 @@ class InvitationService
             throw new Exception("You are not allowed to do this actions", 1);
         }
         
-        return $this->invitationRepository->updateStatus($request, $invitation);
+        $invitation = $this->invitationRepository->updateStatus($request, $invitation);
+
+        $mail = Mail::to($invitation->user->email)->send(new \App\Mail\InvitationUpdateMail($invitation));
+
+        return $invitation;
     }
 
     public function destroy($id)
