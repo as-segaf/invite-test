@@ -33,7 +33,7 @@ return [
     'google' => [
         'client_id' => '48641166347-tm1bpngs58bhiocc25os7e8fnpku3vc0.apps.googleusercontent.com',
         'client_secret' => 'kgroaReKl2j8uqZ4bLDVy612',
-        'redirect' => 'http://localhost:8000/auth/google/callback'
+        'redirect' => 'http://invite-test123.herokuapp.com/auth/google/callback'
     ]
 
 ];
