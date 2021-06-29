@@ -50,6 +50,17 @@ class InvitationController extends Controller
         return redirect('/invitation')->with('success', 'Invitation updated successfully');
     }
 
+    public function updatePlakat(Request $request, Invitation $invitation)
+    {
+        try {
+            $data = $this->invitationService->updatePlakat($request, $invitation);
+        } catch (\Throwable $th) {
+            return redirect('/invitation')->with('error', $th->getMessage());
+        }
+
+        return redirect('/invitation')->with('success', 'Plakat updated successfully');
+    }
+
     public function destroy(Request $id)
     {
         try {

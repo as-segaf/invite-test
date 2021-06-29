@@ -31,6 +31,10 @@ class InvitationRepository implements InvitationRepositoryInterface
             $invitations->whereDate('event_date', '=', Carbon::parse($request->eventDate)->toDateString());
         }
 
+        if ($request->filled('plakatStatus')) {
+            $invitations->where('plakat_status', $request->plakatStatus);
+        }
+
         if ($request->filled('search')) {
             $invitations->where('invite_vos_as', 'ilike', '%'.$request->search.'%')
                 ->orWhere('event_type', 'ilike', '%'.$request->search.'%')
@@ -62,6 +66,7 @@ class InvitationRepository implements InvitationRepositoryInterface
             'participant' => implode(",", $request->participant),
             'additional_note' => $request->additional_note,
             'status' => 'pending',
+            'plakat_status' => 'tanpa plakat',
             'sent_by' => auth()->id(),
         ]);
 
@@ -89,10 +94,25 @@ class InvitationRepository implements InvitationRepositoryInterface
     {
         $invitation->status = $request->status;
 
+        if ($request->status == 'accepted') {
+            $invitation->plakat_status = 'belum';
+        }
+
         if (!$invitation->save()) {
             throw new Exception("Failed to update invitation status", 1);
         }
         
+        return $invitation;
+    }
+
+    public function updatePlakatStatus($request, $invitation)
+    {
+        $invitation->plakat_status = $request->plakat_status;
+
+        if (!$invitation->save()) {
+            throw new Exception("Failed to update plakat status", 1);
+        }
+
         return $invitation;
     }
 

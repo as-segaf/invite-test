@@ -41,5 +41,6 @@ Route::middleware('auth')->group(function() {
 
     Route::middleware('user')->group(function() {
         Route::resource('invitation', InvitationController::class)->except('show', 'edit');
+        Route::patch('invitation/plakat/{invitation}', [InvitationController::class, 'updatePlakat']);
     });
 });

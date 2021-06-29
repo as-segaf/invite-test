@@ -30,6 +30,7 @@ class CreateInvitationsTable extends Migration
             $table->string('participant');
             $table->text('additional_note')->nullable();
             $table->string('status');
+            $table->string('plakat_status')->default('belum');
             $table->foreignId('sent_by')->constrained('users');
             $table->timestamps();
         });

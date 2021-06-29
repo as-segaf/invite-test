@@ -7,11 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class InvitationUpdateMail extends Mailable
+class PlakatReminderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $invitation; 
+    public $invitation;
 
     /**
      * Create a new message instance.
@@ -30,8 +30,8 @@ class InvitationUpdateMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Update for your invitation from VOS')
+        return $this->subject('Reminder for sending plakat')
             ->from('kodokbangkong543@gmail.com', 'Dreamaxtion')
-            ->view('emails.invitationUpdate');
+            ->view('emails.plakatReminder');
     }
 }

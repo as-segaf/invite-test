@@ -16,5 +16,7 @@ interface InvitationRepositoryInterface
 
     public function updateStatus($request, $invitation);
 
+    public function updatePlakatStatus($request, $invitation);
+
     public function destroy($id);
 }

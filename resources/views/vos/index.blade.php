@@ -49,7 +49,19 @@
                                     <input type="date" id="event-date-filter" class="form-control filter-data">
                                 </div>
                             </div>
-                            <div class="col-sm-3"></div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Plakat Status</label>
+                                    <fieldset class="form-group">
+                                        <select class="form-select filter-data" id="plakat-status-filter">
+                                            <option value="">Choose one</option>
+                                            <option value="sudah">Sudah dikirim</option>
+                                            <option value="belum">Belum dikirim</option>
+                                            <option value="tanpa plakat">Tanpa Plakat</option>
+                                        </select>
+                                    </fieldset>
+                                </div>
+                            </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label>Search</label>
@@ -181,6 +193,7 @@
                 var data = {
                     status : $('#status-filter').val(),
                     eventDate : $('#event-date-filter').val(),
+                    plakatStatus : $('#plakat-status-filter').val(),
                     search : $('#search').val(),
                 };
 
@@ -191,6 +204,7 @@
                 var data = {
                     status : $('#status-filter').val(),
                     eventDate : $('#event-date-filter').val(),
+                    plakatStatus : $('#plakat-status-filter').val(),
                     search : $('#search').val(),
                 };
 

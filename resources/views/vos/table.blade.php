@@ -5,6 +5,7 @@
             <th>Invited As</th>
             <th>Event Type</th>
             <th>Event Date</th>
+            <th>Plakat Status</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -16,6 +17,15 @@
                 <td class="text-bold-500">{{$data->invite_vos_as}}</td>
                 <td class="text-bold-500">{{$data->event_type}}</td>
                 <td class="text-bold-500">{{$data->event_date}}</td>
+                <td class="text-bold-500">
+                    @if($data->plakat_status == 'belum')
+                        <span class="badge bg-danger">Belum dikirim</span>
+                    @elseif($data->plakat_status == 'sudah')
+                        <span class="badge bg-success">Sudah dikirim</span>
+                    @elseif($data->plakat_status == 'tanpa plakat')
+                        <span class="badge bg-secondary">Tanpa plakat</span>
+                    @endif
+                </td>
                 <td class="text-bold-500">
                     @if($data->status == 'pending')
                         <span class="badge bg-secondary">pending</span>

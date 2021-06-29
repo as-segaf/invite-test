@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3>Invitations</h3>
-                    <p class="text-subtitle text-muted">You can create an invitation by clicking 'Create' button. And you can see the detail of your invitation by clicking 'Detail' button. </p>
+                    <p class="text-subtitle text-muted">You can create an invitation by clicking 'Create' button. And you can see the detail of your invitation by clicking 'Detail' button.<br>You have to change the plakat status when you have sent plakat. To change plakat status, click the plakat status button.</p>
                     <a href="/invitation/create"><button type="button" class="btn btn-outline-success float-end">Create</button></a>
                 </div>
                 <div class="card-content">
@@ -39,6 +39,7 @@
                                         <th>Event Type</th>
                                         <th>Event Date</th>
                                         <th>Status</th>
+                                        <th>Plakat Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -56,6 +57,15 @@
                                                     <span class="badge bg-success">accepted</span>
                                                 @elseif($data->status == 'declined')
                                                     <span class="badge bg-danger">declined</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-bold-500">
+                                                @if($data->plakat_status == 'belum')
+                                                    <button class="btn btn-sm btn-danger update-plakat" data-bs-toggle="modal" data-bs-target="#modalPlakat" data-invitation-id="{{$data->id}}" data-invite-vos-as="{{$data->invite_vos_as}}" data-event-type="{{$data->event_type}}" data-event-date="{{$data->event_date}}" data-plakat-status="{{$data->plakat_status}}">Belum dikirim</button>
+                                                @elseif($data->plakat_status == 'sudah')
+                                                    <button class="btn btn-sm btn-success">Sudah dikirim</button>
+                                                @elseif($data->plakat_status == 'tanpa plakat')
+                                                    <button class="btn btn-sm btn-secondary">Tanpa Plakat</button>
                                                 @endif
                                             </td>
                                             <td>
@@ -102,6 +112,46 @@
                     <button type="button" class="btn" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Plakat --}}
+    <div class="modal fade text-left" id="modalPlakat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel1">Plakat Status</h5>
+                    <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><b>Invite VOS As</b> : <span id="invite-vos-as"></span></p>
+                    <p><b>Type of Event</b> : <span id="event-type"></span></p>
+                    <p><b>Date of Event</b> : <span id="event-date"></span></p>
+                    <form id="update-plakat-form" method="POST">
+                        @csrf @method('patch')
+                        <div class="from-group">
+                            <label for="plakat-status"><b>Plakat Status</b></label>
+                            <select name="plakat_status" id="status-plakat-form" class="form-select">
+                                <option value="">Choose one</option>
+                                <option value="sudah">Sudah dikirim</option>
+                                <option value="belum">Belum dikirim</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary ml-1" id="submitButton">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Update</span>
                     </button>
                 </div>
             </div>
@@ -181,20 +231,48 @@
                 var participant = $(this).data('participant');
                 var additionalNote = $(this).data('additional-note');
 
-                $('#full-name').text(fullName);
-                $('#nick-name').text(nickName);
-                $('#wa-number').text(waNumber);
-                $('#organization-name').text(organizationName);
-                $('#organization-type').text(organizationType);
-                $('#invite-vos-as').text(inviteVosAs);
-                $('#event-type').text(eventType);
-                $('#event-date').text(eventDate);
-                $('#event-date2').text(eventDate2);
-                $('#event-duration').text(eventDuration);
-                $('#event-place').text(eventPlace);
-                $('#event-detail').text(eventDetail);
-                $('#participant').text(participant);
-                $('#additional-note').text(additionalNote);
+                $('#modalDetail #full-name').text(fullName);
+                $('#modalDetail #nick-name').text(nickName);
+                $('#modalDetail #wa-number').text(waNumber);
+                $('#modalDetail #organization-name').text(organizationName);
+                $('#modalDetail #organization-type').text(organizationType);
+                $('#modalDetail #invite-vos-as').text(inviteVosAs);
+                $('#modalDetail #event-type').text(eventType);
+                $('#modalDetail #event-date').text(eventDate);
+                $('#modalDetail #event-date2').text(eventDate2);
+                $('#modalDetail #event-duration').text(eventDuration);
+                $('#modalDetail #event-place').text(eventPlace);
+                $('#modalDetail #event-detail').text(eventDetail);
+                $('#modalDetail #participant').text(participant);
+                $('#modalDetail #additional-note').text(additionalNote);
+            });
+
+
+            $(document).on('click', '.update-plakat', function() {
+                var invitationId = $(this).data('invitation-id');
+                var inviteVosAs = $(this).data('invite-vos-as');
+                var eventType = $(this).data('event-type');
+                var eventDate = $(this).data('event-date');
+                var plakatStatus = $(this).data('plakat-status');
+                console.log(plakatStatus)
+
+
+                $('#modalPlakat #invite-vos-as').text(inviteVosAs);
+                $('#modalPlakat #event-type').text(eventType);
+                $('#modalPlakat #event-date').text(eventDate);
+
+                if (plakatStatus == 'belum') {
+                    $('#status-plakat-form option[value=belum]').attr('selected', 'selected');
+                }
+
+                if (plakatStatus == 'sudah') {
+                    $('#status-plakat-form option[value=sudah]').attr('selected', 'selected');
+                }
+
+                $('#update-plakat-form').attr('action', '/invitation/plakat/'+invitationId);
+                $('#modalPlakat #submitButton').click(function() {
+                    $('#update-plakat-form').submit();
+                });
             });
 
             // $(document).on('click', '.edit-invitation', function() {

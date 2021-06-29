@@ -57,6 +57,11 @@ class InvitationService
         return $invitation;
     }
 
+    public function updatePlakat($request, $invitation)
+    {
+        return $this->invitationRepository->updatePlakatStatus($request, $invitation);
+    }
+
     public function destroy($id)
     {
         return $this->invitationRepository->destroy($id);
